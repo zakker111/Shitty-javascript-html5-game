@@ -1,0 +1,231 @@
+<!doctype html>
+<html>
+    <head>
+	<meta charset="UTF-8">
+        <title>gamehade</title>
+		<style>
+			#canvas{
+				border: 1px solid black;
+			}
+			#gcanvas{
+				border: 1px solid black;
+			}
+			
+			.MainDiv {
+				display: block;
+				position: relative;
+				width: 670px;
+				height: 590px;
+				left: 0px;
+				top: 0px;
+				border: 1px solid green;
+				background: white;
+				color: black;	
+			}
+			
+			.Gui {
+				display: block;
+				position: relative;
+				width: 610px;
+				height: 32px;
+				left: 0px;
+				top: 0px;
+				border: 1px solid blue;
+				background: white;
+				color: black;	
+			}
+			
+			.CanvasDiv {
+				display: block;
+				position: relative;
+				width: 100%;
+				/*height: 490px;*/
+				left: 0%;
+				top: 6%;
+				border: 1px solid red;
+				background: white;
+				color: black;	
+			}
+			
+			.gCanvasDiv {
+				display: block;
+				position: absolute;
+				width: 100%;
+				left: 0%;
+				top: 5%;
+				border: 1px solid red;
+				background: transparent;
+				color: black;	
+			}
+			
+			.ArkkuDiv {
+				display: none;
+				position: absolute;
+				width: 66%;
+				height: 77%;
+				left: 10%;
+				top: 14%;
+				border: 1px solid green;
+				background: white;
+				opacity: 0.7;
+				color: black;	
+			}
+			
+			.arkkuImage {
+				width: 128px;/*32x4*/
+				height: 128px;
+				background-image:url(spritesheet.png);
+				background-size:1024px 1024px;/*32 x 32*/
+				display: none;
+				position: relative;
+				left: 55px;
+				top: 40px;
+				border: 1px solid black;
+			}
+			
+			.towerImage {
+				width: 64px;
+				height: 128px;
+				display: none;
+				position: relative;
+				left: 55px;
+				top: 40px;
+				border: 1px solid black;	
+			}
+			
+			.arkkuText {
+				width: 100px;/*32x4*/
+				height: 0px;
+				position: relative;
+				left: 200px;
+				top: -50px;
+				display: none;
+			}
+			
+			.EndDiv {
+				display: none;
+				position: absolute;
+				width: 900px;
+				height: 700px;
+				left: 0px;
+				top: 0px;
+				border: 1px solid purple;
+				background: white;
+				color: black;	
+			}
+			
+			.GumpDiv {
+				display: none;
+				position: absolute;
+				width: 40%;
+				height: 20%;
+				left: 3%;
+				top: 8%;
+				border: 1px solid green;
+				background: lightgray;
+				color: black;	
+			}
+			
+			.TextDiv {
+				display: none;
+				position: absolute;
+				width: 91%;
+				height: 11%;
+				left: 0%;
+				top: 94%;
+				border: 1px solid blue;
+				background: white;
+				color: black;	
+			}
+			
+			.Hidden {
+			display: none;
+			}
+		</style>
+		
+		<meta name="viewport" content="initial-scale=1.0">
+
+
+    </head>
+    <body>
+		<div id="start" class="MainDiv">ALKU SKREENI!!:<p>
+		<button onclick="StartNewGame()">Start New Game</button><p>
+		<button onclick="StartNewArena()">Arena mode</button><p>
+		<button onclick="StartFromSave()">Load From Save Game</button><p>
+		<button onclick="characterMenu()">Make Your Character</button><p>
+		Seed: <input type="number" id="seed">
+		</div>
+		
+		<div id="charactermenu" class="MainDiv">Character Menu<p>
+		<label for=charname>Character Name</label><p>
+		<input type="string" id="charname"><p>
+		<label for=slider1>STR</label>
+		<input id="slider1" type="range" min="0" max="10" step="1" oninput="characterUbdate(value)" /> 
+		<output for=slider1 id=volume>10</output><p>
+		<button onclick="mainMenu()" style="height:100px; width:100px">TO Main Menu</button><p>
+		</div>
+		
+		<div id="map" class="MainDiv"> <img src="map1.png">
+			<div id="towers">
+				
+			</div>
+		</div>
+		
+		<div id="main" class="MainDiv">	
+			<div id="gui" class="Gui">Gui: 
+				<span> Player HP: </span>
+					<span id="hp"></span>
+				<span> Player XP: </span>
+					<span id="xp"></span>
+				<span> Player LVL: </span>
+					<span id="lvl"></span>
+				<span> HAND: </span>
+					<span id="hand"></span>
+			</div>
+					
+			
+			<div id="CanvasDiv" class="CanvasDiv">
+				<canvas id="canvas"></canvas>		
+			</div>
+			
+			<div id="gcanvasDiv" class="gCanvasDiv">
+				<canvas id="gcanvas"></canvas>
+			</div>
+			
+			<div id="ArkkuDiv"class="ArkkuDiv">
+			<button  onclick="disableArkku()" style="position:absolute; height:100px; width:100px; left:340px;">Hide</button>
+			<div id="Item0" class="arkkuImage"  onclick="chestPick(id)"></div>
+			<div id="Itemtext0" class="arkkuText"></div>
+			<div id="Item1" class="arkkuImage" onclick="chestPick(id)"></div>
+			<div id="Itemtext1" class="arkkuText"></div>
+			<div id="Item2" class="arkkuImage" onclick="chestPick(id)"></div>
+			<div id="Itemtext2" class="arkkuText"></div>
+			</div>
+			
+			<div id="EndDiv"class="EndDiv">ENDSCREEN<p><span> Enemies killed: </span><span id="killed"></span><p>
+			<button onclick="mainMenu()">Go To Main Menu</button><p>
+			</div>	
+
+			<div id="GumpDiv" class="GumpDiv">GUMP<p><span id="GumpText"></span><p>
+			<button id="OkButton" onclick="GumpButton(true)">Ok</button><button id="CancellButton" onclick="GumpButton(false)">Cancell</button>
+			</div>
+			
+			<div id="TextDiv" class="TextDiv">TEXT: <span id="TextDivtext"></span><p>
+			</div>
+			
+			
+		</div>
+	
+			
+		<script type="text/javascript" src="hammer.js-1.1.3/hammer.min.js"> </script>
+		<script type="text/javascript" src="seedrandom.js"> </script>
+		<script type="text/javascript" src="globalls.js"> </script>
+		<script type="text/javascript" src="buttonEvents.js"> </script>
+		<script type="text/javascript" src="controlls.js"> </script>
+		<script type="text/javascript" src="chest.js"> </script>
+		<script type="text/javascript" src="game.js"> </script>
+		<script type="text/javascript" src="tilehitdetection.js"> </script>
+		<script type="text/javascript" src="arenamode.js"> </script>
+		
+    </body>
+</html>
